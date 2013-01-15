@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <style type="text/css">
+            .log {
+                color: red;
+            }
+        </style>
+        <script>
+            console.log('hoge')
+            ws = new WebSocket("ws://localhost:8080");
+            ws.onopen = function (e) {
+                console.log('call onopen')
+                var resultAreaObj = document.getElementById('result');
+                resultAreaObj.innerHTML += '<span class="log">onopen</span>' + '<br>'
+            };
+            ws.onclose = function (e) {
+                console.log('call onclose')
+                var resultAreaObj = document.getElementById('result');
+                resultAreaObj.innerHTML += '<span class="log">onclose</span>' + '<br>'
+            };
+            ws.onmessage = function (e) {
+                console.log('call onmessage')
+                var resultAreaObj = document.getElementById('result');
+                resultAreaObj.innerHTML += e.data + '<br>'
+            };
+            ws.onerror = function () {
+                console.log('call onerror')
+                var resultAreaObj = document.getElementById('result');
+                resultAreaObj.innerHTML += '<span class="log">onerror</span>' + '<br>'
+            };
+            send = function () {
+                console.log('call send')
+                var textFieldObj = document.getElementById('textField');
+                var data = textFieldObj.value;
+                if (data) {
+                    ws.send(data);
+                    textFieldObj.value = '';
+                }
+            };
+        </script>
+    </head>
+    <body>
+        <input type='text' id='textField'/>
+        <button onclick='send();'>send</button><br>
+        <button onclick='ws.close();'>close</button>
+        <hr>
+        <div id='result'></div>
+    </body>
+</html>
