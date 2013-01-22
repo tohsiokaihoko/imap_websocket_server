@@ -61,11 +61,14 @@ class AppController:
 
     def dosync(self):
         print "Call AppController::dosync"
-        typ,nums = self.idler.M.search("UTF-8", "unseen")
-        UIDs = [int(uid) for uid in nums[0].split()]
-        print "Unseen message:%d" % len(nums[0].split())
-        print "UIDs:%s" % UIDs
-        self.sendData({'method':'unseen', 'mailAddress':self.mailAddress, 'count':len(nums[0].split())})
+        try:
+            typ,nums = self.idler.M.search("UTF-8", "unseen")
+            UIDs = [int(uid) for uid in nums[0].split()]
+            print "Unseen message:%d" % len(nums[0].split())
+            print "UIDs:%s" % UIDs
+            self.sendData({'method':'unseen', 'mailAddress':self.mailAddress, 'count':len(nums[0].split())})
+        except Exception,e:
+            self.sendError(500, 'Exception /' + e)
 
     def sendData(self, data):
         self.server.sendDataFrame(data)
