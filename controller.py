@@ -68,7 +68,7 @@ class AppController:
             print "UIDs:%s" % UIDs
             self.sendData({'method':'unseen', 'mailAddress':self.mailAddress, 'count':len(nums[0].split())})
         except Exception,e:
-            self.sendError(500, 'Exception /' + e)
+            self.sendError(500, 'Exception /%s' % e)
 
     def sendData(self, data):
         self.server.sendDataFrame(data)
